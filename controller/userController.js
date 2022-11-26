@@ -3,54 +3,142 @@ const userModel = require("../model/userModel")
 
 //forgetPassword
 module.exports.forgetPassword = function (req,res) {
-    let email = req.body.email;
+    let email = req.body.email
+    let isCorrect = false;
+    let otp = parseInt(Math.random() * 1000000);
+    //authenticate 
 
-    userModel.findOne({
-        "email":email
-    }, function (err,data) {
+    userModel.findOne({ "email": email }, function (err, user) {
         if (err) {
-            res.json({
-               " msg": "Something went wrong!!!",
-                "status": -1,
-               " data": err
-            })
-        }
-        else {
-            if (data) {
-                //otp generate
-                let otp= parseInt((Math.random() * 1000000));
-                //mail send
-                userModel.updateOne(
-                    {"email":email},
-                    {"otp":otp},
-                    function (err,data) {
-                        console.log(err);
-                        console.log(data);
-                    }
-                     )
+            console.log("Error" + err)
+
+        } else {
+
+            if (user == null || user == undefined) {
                 res.json({
-                    "msg": "OTP Successfully sent to your email",
-                    "status": 200,
-                    "data": email
+                    data: req.body,
+                    msg: "Invalid Email",
+                    status: -1
+                })
+            } else {
+
+                //send mail - otp 
+                //user - otp update 
+                userModel.updateOne({ "email": email }, { "otp": otp }, function (err, data) {
+                    if (err)
+                        console.log(err)
+                    else
+                        console.log(data)
+                })
+                res.json({
+                    data: "Please Check Your email",
+                    msg: "Otp Sent Please Check Your email",
+                    status: 200
                 })
             }
-            else{
-                res.json({
-                    "msg": "Invalid email",
-                    "status": -1,
-                    "data": email
-                })
-            }
-           
         }
     })
+    // let email = req.body.email;
+    // // let isCorrect = false;
+    // // let otp = parseInt(Math.random() * 1000000);
+
+    // userModel.findOne({
+    //     "email":email
+    // }, function (err,user) {
+    //     if (err) {
+    //         res.json({
+    //            " msg": "Something went wrong!!!",
+    //             "status": -1,
+    //            " data": err
+    //         })
+    //     }
+    //     else {
+    //         if (user) {
+    //             //otp generate
+    //             let otp= parseInt((Math.random() * 1000000));
+    //             //mail send
+    //             userModel.updateOne(
+    //                 {"email":email},
+    //                 {"otp":otp},
+    //                 function (err,data) {
+    //                     if(err)
+    //                     {
+    //                         console.log(err);
+    //                     }
+    //                     else{
+    //                         console.log(data);
+    //                     }
+    //                 })
+    //             res.json({
+    //                 "msg": "OTP Successfully sent to your email",
+    //                 "status": 200,
+    //                 "data": email
+    //             })
+    //         }
+    //         else{
+    //             res.json({
+    //                 "msg": "Invalid email",
+    //                 "status": -1,
+    //                 "data": email
+    //             })
+    //         }
+           
+    //     }
+    // })
 }
 
 //updatePassword
-module.exports.updatePassword = function (req,res) {
+module.exports.resetPassword = function (req,res) {
     let email = req.body.email;
     let password= req.body.password;
+    let isCorrect = false;
     let otp = req.body.otp;
+
+    userModel.findOne({"email":email}, function (err,user) {
+        if(err)
+        {
+            console.log(err);
+        }
+        else{
+            if (user == null || user == undefined) {
+                res.json({
+                    data: req.body,
+                    msg: "Invalid Data",
+                    status: -1
+                })
+            } else {
+
+                if (user.otp == otp) {
+                    userModel.updateOne({"email":email},{"password":password,"otp":""},function(err,data){
+                        if(err)
+                            console.log(err)
+                        else{
+                            res.json({
+                                data:"User Modified",
+                                msg:"Password Reset Successfully....",
+                                status:200
+                            })
+                        }    
+                    })
+                } else {
+                    res.json({
+                        data: req.body,
+                        msg: "Invalid OTP",
+                        status: -1
+                    })
+                }
+            }
+        }
+    })
+    if (isCorrect == true) {
+        res.json({
+            data: req.body,
+            msg: "Password Successfully modified",
+            status: 200
+        })
+    } else {
+        console.log("password not modified");
+    }
 }
 
 
@@ -129,8 +217,8 @@ module.exports.getAllUser = function(req,res){
 //deleteUser
 module.exports.deleteUser = function(req,res){
 
-    let userID = req.body.userID 
-    userModel.deleteOne({_id:userID},function(err,data){
+    // let userID = req.body.userID 
+    userModel.deleteOne({_id:req.params.userId},function(err,data){
         console.log(err);
         if(err){
             res.json({
@@ -152,7 +240,7 @@ module.exports.deleteUser = function(req,res){
 
 //updateUser
 module.exports.updateUser = function(req,res){
-    let userID = req.body.userID
+    let userid = req.body.userid
     let firstName = req.body.firstName
     let lastName = req.body.lastName
     let email = req.body.email
@@ -164,7 +252,7 @@ module.exports.updateUser = function(req,res){
     let falseAttempts = req.body.falseAttempts
     let isApproved = req.body.isApproved
 
-    userModel.updateOne({_id:userID},{firstName: firstName, lastName:lastName, email:email, mobileNo:mobileNo, address:address, gender:gender, dob:dob, password:password,falseAttempts:falseAttempts,
+    userModel.updateOne({_id:userid},{firstName: firstName, lastName:lastName, email:email, mobileNo:mobileNo, address:address, gender:gender, dob:dob, password:password,falseAttempts:falseAttempts,
     isApproved:isApproved},function(err,data){
         console.log(err);
         if(err){
@@ -177,6 +265,25 @@ module.exports.updateUser = function(req,res){
             res.json({
                 msg: "User updated...",
                 status: 200,
+                data: data
+            })
+        }
+    })
+
+}
+module.exports.getuserByid = function(req,res){
+    let userid = req.params.userid;
+    userModel.findOne({_id:userid},function (err,data) {
+        if (err) {
+            res.json({
+                status: -1,
+                msg: "SME",
+                data: err
+            })
+        } else {
+            res.json({
+                status: 200,
+                msg: "user reterieved..",
                 data: data
             })
         }

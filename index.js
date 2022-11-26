@@ -43,8 +43,10 @@ app.put('/userType',userTypeController.updateUserTypes)
 app.get('/user',userController.getAllUser)
 app.post('/user',userController.addUser)
 app.post('/forgetPassword',userController.forgetPassword)
-app.delete('/user',userController.deleteUser)
+app.put('/resetPassword',userController.resetPassword);
+app.delete('/user/:userId',userController.deleteUser)
 app.put('/user',userController.updateUser)
+app.get("/getuserbyid/:userid",userController.getuserByid)
 //user--api
 
 //login,signup api

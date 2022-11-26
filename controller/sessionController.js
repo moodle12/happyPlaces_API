@@ -27,7 +27,6 @@ module.exports.login = function (req, res) {
             })
         }
     });
-
 }
 module.exports.signup = function (req, res) {
     let firstName = req.body.firstName;
