@@ -61,8 +61,8 @@ module.exports.getAllBusiness = function(req,res){
 //deleteBusiness
 module.exports.deleteBusiness = function(req,res){
 
-    let businessId = req.body.businessId 
-    businessModel.deleteOne({_id:businessId},function(err,data){
+    // let businessId = req.body.businessId 
+    businessModel.deleteOne({_id:req.params.businessId},function(err,data){
         console.log(err);
         if(err){
             res.json({

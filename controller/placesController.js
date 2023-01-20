@@ -79,8 +79,8 @@ module.exports.getAllPlaces = function(req,res){
 //deletePlaces
 module.exports.deletePlace = function(req,res){
 
-    let placeID = req.body.placeID
-    placesModel.deleteOne({_id:placeID},function(err,data){
+    // let placeID = req.body.placeID
+    placesModel.deleteOne({_id:req.params.placeId},function(err,data){
         console.log(err);
         if(err){
             res.json({
@@ -102,7 +102,7 @@ module.exports.deletePlace = function(req,res){
 
 //updatePlaces
 module.exports.updatePlace = function(req,res){
-    let  placeID = req.body.placeID
+    let  placeid = req.body.placeid
     let placeName = req.body.placeName
     let lat = req.body.lat
     let long = req.body.long
@@ -116,13 +116,13 @@ module.exports.updatePlace = function(req,res){
     let specialInstruction = req.body.specialInstruction
     let isActive = req.body.isActive
 
-    placesModel.updateOne({_id:placeID},{placeName:placeName,lat:lat,long:long,isApproved:isApproved,title:title,description:description,totalSeats:totalSeats,totalPrice:totalPrice,totalDay:totalDay,totalNight:totalNight,specialInstruction:specialInstruction,isActive:isActive},function(err,data){
+    placesModel.updateOne({_id:placeid},{placeName:placeName,lat:lat,long:long,isApproved:isApproved,title:title,description:description,totalSeats:totalSeats,totalPrice:totalPrice,totalDay:totalDay,totalNight:totalNight,specialInstruction:specialInstruction,isActive:isActive},function(err,data){
         console.log(err);
         if(err){
             res.json({
                 msg: "Something went wrong!!!",
                 status: -1,
-                data: placeID
+                data: placeid
             })
         }else{
             res.json({
@@ -134,3 +134,23 @@ module.exports.updatePlace = function(req,res){
     })
 
 }//updatePlace
+
+module.exports.getplaceByid = function(req,res){
+    let placeid = req.params.placeid;
+    placesModel.findOne({_id:placeid},function (err,data) {
+        if (err) {
+            res.json({
+                status: -1,
+                msg: "SME",
+                data: err
+            })
+        } else {
+            res.json({
+                status: 200,
+                msg: "place retrieved..",
+                data: data
+            })
+        }
+    })
+
+}

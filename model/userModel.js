@@ -29,7 +29,7 @@ const UserSchema = new mongoose.Schema({
         type:String
     },
     dob:{
-        type:Date
+        type:String
     },
     password:{
         type:String,

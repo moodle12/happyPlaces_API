@@ -58,11 +58,11 @@ module.exports.getAllActivity = function (req,res)
 
 module.exports.updateActivity = function(req,res)
 {
-     let actId = req.body.actId
+     let activityId = req.body.activityId
     let actType = req.body.actType
     
 
-    activitymodel.updateOne({_id:actId}, {"actType":actType} ,function(err,succes)
+    activitymodel.updateOne({_id:activityId}, {"actType":actType} ,function(err,succes)
     {
         console.log(err);
         if(err)
@@ -85,8 +85,8 @@ module.exports.updateActivity = function(req,res)
 
 module.exports.deleteActivity = function (req,res)
 {
-    let actId = req.body.actId
-    activitymodel.deleteOne({_id:actId},function(err,data){
+    // let actId = req.body.actId
+    activitymodel.deleteOne({_id:req.params.activityId},function(err,data){
         console.log(err);
         if(err)
         {
@@ -106,3 +106,23 @@ module.exports.deleteActivity = function (req,res)
         }
     })
 }//delete Activity
+
+module.exports.getactivityByid = function(req,res){
+    let activityId = req.params.activityId;
+    activitymodel.findOne({_id:activityId},function (err,data) {
+        if (err) {
+            res.json({
+                status: -1,
+                msg: "SME",
+                data: err
+            })
+        } else {
+            res.json({
+                status: 200,
+                msg: "Activity retrieved..",
+                data: data
+            })
+        }
+    })
+
+}

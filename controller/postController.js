@@ -58,12 +58,32 @@ module.exports.getAllPosts = function (req,res)
     })
 }// end of get all posts
 
+module.exports.getpostByid = function(req,res){
+    // let postId = req.params.postId;
+    postModel.findOne({_id:req.params.postId},function (err,data) {
+        if (err) {
+            res.json({
+                status: -1,
+                msg: "SME",
+                data: err
+            })
+        } else {
+            res.json({
+                status: 200,
+                msg: "post retrieved..",
+                data: data
+            })
+        }
+    })
+
+}
+
 module.exports.updatePost = function(req,res)
 {
     let postId = req.body.postId
     let place = req.body.place
     let likes = req.body.likes
-    let isVerified = res.body.isVerified    
+    let isVerified = req.body.isVerified    
 
     postModel.updateOne(
         {_id:postId},
@@ -90,8 +110,8 @@ module.exports.updatePost = function(req,res)
 
 module.exports.deletePost = function (req,res)
 {
-    let postId = req.body.postId
-    postModel.deleteOne({_id:postId},function(err,data){
+    // let postId = req.body.postId
+    postModel.deleteOne({_id:req.params.postId},function(err,data){
         console.log(err);
         if(err)
         {

@@ -56,15 +56,18 @@ app.post('/signup',sessionController.signup)
 
 //table 3 booking
 app.post("/booking",bookingController.addBooking)
-app.delete("/booking",bookingController.deletebooking)
+app.delete("/booking/:bookingId",bookingController.deletebooking)
 app.put("/booking",bookingController.updatebooking)
 app.get("/booking",bookingController.getAllbooking)
+app.get("/getthismonthbooking", bookingController.getThisMonthBookings)
+app.get("/getbookingbyid/:bookingid",bookingController.getbookingByid)
 
 // table 4 Activity
 app.post("/activity",activityController.addActivity)
-app.delete("/activity",activityController.deleteActivity)
+app.delete("/activity/:activityId",activityController.deleteActivity)
 app.put("/activity",activityController.updateActivity)
 app.get("/activity",activityController.getAllActivity)
+app.get("/getactivitybyid/:activityId",activityController.getactivityByid)
 //Activity
 
 //customerFeedback--api
@@ -78,15 +81,16 @@ app.put('/customerFeedback',customerFeedbackController.updateCustomerFeedback)
 //business--api
 app.get('/business',businessController.getAllBusiness)
 app.post('/business',businessController.addBusiness)
-app.delete('/business',businessController.deleteBusiness)
+app.delete('/business/:businessId',businessController.deleteBusiness)
 app.put('/business',businessController.updateBusiness)
 //business--api
 
 // table 5 posts
 app.post("/post",postController.addPost)
-app.delete("/post",postController.deletePost)
+app.delete("/post/:postId",postController.deletePost)
 app.put("/post",postController.updatePost)
 app.get("/post",postController.getAllPosts)
+app.get("/getpostbyid/:postId",postController.getpostByid)
 //posts
 
 //userPost--api
@@ -100,8 +104,9 @@ app.put('/userPost',userPostController.updateUserPosts)
 //places--api
 app.get('/place',placesController.getAllPlaces)
 app.post('/place',placesController.addPlace)
-app.delete('/place',placesController.deletePlace)
+app.delete('/place/:placeId',placesController.deletePlace)
 app.put('/place',placesController.updatePlace)
+app.get("/getplacebyid/:placeid",placesController.getplaceByid)
 //places--api
 
 

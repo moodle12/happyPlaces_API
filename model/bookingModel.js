@@ -23,6 +23,9 @@ const bookingSchema = new mongoose.Schema(
         },
         noOfPerson:{
             type:Number
+        },
+        dateOfBooking:{
+            type:String
         }
     }// creating booking  Schema
 

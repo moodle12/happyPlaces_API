@@ -8,6 +8,7 @@ module.exports.addBooking = function(req,res){
     let user = req.body.user
     let status = req.body.status
     let noOfPerson = req.body.noOfPerson
+    let dateOfBooking = req.body.dateOfBooking
 
     let Booking = new bookingModel(
         {
@@ -16,7 +17,8 @@ module.exports.addBooking = function(req,res){
             "act":act,
             "user":user,
             "status":status,
-            "noOfPerson":noOfPerson
+            "noOfPerson":noOfPerson,
+            "dateOfBooking":dateOfBooking
         }
         )
         Booking.save(function(err,sucess){
@@ -62,14 +64,57 @@ module.exports.getAllbooking = function (req,res)
         }
     })
 }// end of get all bookings
+
+
+module.exports.getThisMonthBookings = function (req, res) {
+    let m = new Date().getMonth() + 1;
+    let y = new Date().getFullYear();
+    console.log(m);
+    console.log(y);
+    //db 
+    // ExpenseModel.find($AND:{ $gt:{date}  }}
+    bookingModel.find(
+        {
+
+            "$and": [
+                {
+                    "$expr": {
+                        "$eq": [{ $month: { $dateFromString: { "dateString": "$dateOfBooking" } } }, m]
+                    }
+                }
+                ,
+                {
+                    "$expr": {
+                        "$eq": [{ $year: { $dateFromString: { "dateString": "$dateOfBooking" } } }, y]
+                    }
+                }
+            ]
+
+        }, function (err, data) {
+            if (err) {
+
+            } else {
+                res.json({
+                    data: data,
+                    status: 200,
+                    msg: "Done"
+                })
+            }
+        }
+    )
+}
+
+//end of this month booking
+
 module.exports.updatebooking = function(req,res)
 {
-    let bookingId = req.body.bookingId
+    let bookingid = req.body.bookingid
     let status = req.body.status
     let noOfPerson = req.body.noOfPerson
+    let dateOfBooking = req.body.dateOfBooking
 
     bookingModel.updateOne(
-        {_id:bookingId}, {"status":status,"noOfPerson":noOfPerson},function(err,succes)
+        {_id:bookingid}, {"status":status,"noOfPerson":noOfPerson,"dateOfBooking":dateOfBooking},function(err,succes)
     {
         console.log(err);
         if(err)
@@ -91,8 +136,8 @@ module.exports.updatebooking = function(req,res)
 }// end of  update booking
 module.exports.deletebooking = function (req,res)
 {
-    let bookingId = req.body.bookingId
-    bookingModel.deleteOne({_id:bookingId},function(err,data){
+    // let bookingId = req.body.bookingId
+    bookingModel.deleteOne({_id:req.params.bookingId},function(err,data){
         console.log(err);
         if(err)
         {
@@ -112,3 +157,22 @@ module.exports.deletebooking = function (req,res)
         }
     })
 }//delete booking
+module.exports.getbookingByid = function(req,res){
+    let bookingid = req.params.bookingid;
+    bookingModel.findOne({_id:bookingid},function (err,data) {
+        if (err) {
+            res.json({
+                status: -1,
+                msg: "SME",
+                data: err
+            })
+        } else {
+            res.json({
+                status: 200,
+                msg: "booking retrieved..",
+                data: data
+            })
+        }
+    })
+
+}
