@@ -44,7 +44,7 @@ module.exports.addBooking = function(req,res){
 
 module.exports.getAllbooking = function (req,res)
 {
-    bookingModel.find().populate("place").populate("act").populate("user").exec(function(err,succes){
+    bookingModel.find().populate("place").populate("act").populate("user").populate("status").exec(function(err,succes){
         console.log(err);
         if(err)
         {
@@ -156,7 +156,7 @@ module.exports.deletebooking = function (req,res)
             })
         }
     })
-}//delete booking
+}//delete booking 
 module.exports.getbookingByid = function(req,res){
     let bookingid = req.params.bookingid;
     bookingModel.findOne({_id:bookingid},function (err,data) {
@@ -174,5 +174,24 @@ module.exports.getbookingByid = function(req,res){
             })
         }
     })
+
+}
+module.exports.getbookingByStatus = function(req,res){
+    let statusid = req.params.statusid;
+    bookingModel.find({status:statusid},function (err,data) {
+        if (err) {
+            res.json({
+                status: -1,
+                msg: "SME",
+                data: err
+            })
+        } else {
+            res.json({
+                status: 200,
+                msg: "booking retrieved..",
+                data: data
+            })
+        }
+    }).populate("place").populate("act").populate("user")
 
 }

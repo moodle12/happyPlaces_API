@@ -19,7 +19,8 @@ const bookingSchema = new mongoose.Schema(
              ref:"User"
         },
         status:{
-            type:Boolean
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Status"
         },
         noOfPerson:{
             type:Number

@@ -5,6 +5,9 @@ const businessSchema = new mongoose.Schema({
     //     type:Number,
     //     required:true
     // },
+    businessName:{
+        type:String
+    },
     businessType:{
         type:String
     },

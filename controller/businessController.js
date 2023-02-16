@@ -3,6 +3,7 @@ const businessModel = require("../model/businessModel")
 module.exports.addBusiness = function (req, res) {
     // let businessID = parseInt(Math.random()*1000000)
     let user = req.body.user
+    let businessName=req.body.businessName
     let businessType = req.body.businessType
     let businessAddress = req.body.businessAddress
     let consumerContact = req.body.consumerContact
@@ -12,6 +13,7 @@ module.exports.addBusiness = function (req, res) {
         { 
             // "businessID": businessID, 
             "user": user,
+            "businessName":businessName,
             "businessType": businessType,
             "businessAddress": businessAddress,
             "consumerContact":consumerContact,
@@ -85,12 +87,13 @@ module.exports.deleteBusiness = function(req,res){
 //updateBusiness
 module.exports.updateBusiness = function(req,res){
     let businessId = req.body.businessId
+    let businessName=req.body.businessName
     let businessType = req.body.businessType
     let businessAddress = req.body.businessAddress
     let consumerContact = req.body.consumerContact
     let emailAddress = req.body.emailAddress
 
-    businessModel.updateOne({_id:businessId},{businessType:businessType,businessAddress:businessAddress,consumerContact:consumerContact,emailAddress:emailAddress},function(err,data){
+    businessModel.updateOne({_id:businessId},{ businessName:businessName,businessType:businessType,businessAddress:businessAddress,consumerContact:consumerContact,emailAddress:emailAddress},function(err,data){
         console.log(err);
         if(err){
             res.json({

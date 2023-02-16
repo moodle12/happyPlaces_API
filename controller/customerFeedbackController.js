@@ -39,7 +39,7 @@ module.exports.addCustomerFeedback = function (req, res) {
 
 //getAllCustomerFeedback
 module.exports.getAllCustomerFeedback = function(req,res){
-    customerFeedbackModel.find().populate("user").populate("business").exec(function(err,data){
+    customerFeedbackModel.find().populate("business").populate("user").exec(function(err,data){
         console.log(err);
         if(err){
             res.json({

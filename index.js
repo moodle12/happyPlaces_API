@@ -9,6 +9,7 @@ const activityController = require("./controller/activityController")
 const postController = require("./controller/postController")
 const bookingController = require("./controller/bookingController")
 const sessionController = require("./controller/sessionController")
+const statusController=require("./controller/statusController")
 const mongoose = require("mongoose");
 const cors = require('cors');
 const app = express()
@@ -61,7 +62,7 @@ app.put("/booking",bookingController.updatebooking)
 app.get("/booking",bookingController.getAllbooking)
 app.get("/getthismonthbooking", bookingController.getThisMonthBookings)
 app.get("/getbookingbyid/:bookingid",bookingController.getbookingByid)
-
+app.get("/getbookingbystatus/:statusid",bookingController.getbookingByStatus)
 // table 4 Activity
 app.post("/activity",activityController.addActivity)
 app.delete("/activity/:activityId",activityController.deleteActivity)
@@ -109,6 +110,12 @@ app.put('/place',placesController.updatePlace)
 app.get("/getplacebyid/:placeid",placesController.getplaceByid)
 //places--api
 
+//status--api
+app.post("/status",statusController.addStatus)
+app.delete("/status/:statusId",statusController.deleteStatus)
+app.put("/status",statusController.updatestatus)
+app.get("/status",statusController.getAllStatus)
+app.get("/getstatusbyid/:statusId",statusController.getstatusbyid)
 
 app.listen(9909,function(err){
     if(err){
