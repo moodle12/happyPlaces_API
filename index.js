@@ -5,6 +5,7 @@ const customerFeedbackController = require("./controller/customerFeedbackControl
 const businessController = require("./controller/businessController")
 const userPostController = require("./controller/userPostController")
 const placesController = require("./controller/placesController")
+const commonplacesController = require("./controller/commonvisitedController")
 const activityController = require("./controller/activityController")
 const postController = require("./controller/postController")
 const bookingController = require("./controller/bookingController")
@@ -109,6 +110,14 @@ app.delete('/place/:placeId',placesController.deletePlace)
 app.put('/place',placesController.updatePlace)
 app.get("/getplacebyid/:placeid",placesController.getplaceByid)
 //places--api
+
+//common-places--api
+app.get('/commonplace',commonplacesController.getAllCommonPlaces)
+app.post('/commonplace',commonplacesController.addCommonPlace)
+app.delete('/commonplace/:commonvisitedId',commonplacesController.deleteCommonPlace)
+app.put('/commonplace',commonplacesController.updateCommonPlace)
+app.get("/getcommonplacebyid/:commonvisitedId",commonplacesController.getcommonplaceByid)
+//common-places--api
 
 //status--api
 app.post("/status",statusController.addStatus)
