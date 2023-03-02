@@ -5,6 +5,9 @@ const UserPostSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"User"
     },
+    postImage:{
+        type:String
+    },
     post:{
         type:mongoose.Schema.Types.ObjectId,
          ref:"Post"

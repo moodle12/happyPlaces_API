@@ -5,12 +5,10 @@ const placeSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
          ref:"User"
     },
-    // placeID:{
-    //     type:Number,
-    //     required:true
-    // },
-
     placeName:{
+        type:String
+    },
+    placeImage:{
         type:String
     },
     lat:{

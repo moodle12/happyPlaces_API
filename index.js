@@ -14,11 +14,14 @@ const statusController=require("./controller/statusController")
 const mongoose = require("mongoose");
 const cors = require('cors');
 const app = express()
-
+const bodyParser =require("body-parser")
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(cors())
 app.use(express.json())  //body
 app.use(express.urlencoded({extended:true})) //body -- extended true because of plus or any other symbol
-
+app.use(bodyParser.json());
 
 mongoose.connect("mongodb://localhost:27017/happyPlaces",function (err) {
 
@@ -96,19 +99,19 @@ app.get("/getpostbyid/:postId",postController.getpostByid)
 //posts
 
 //userPost--api
-app.get('/userPost',userPostController.getAllUserPosts)
-app.post('/userPost',userPostController.addUserPost)
-app.delete('/userPost',userPostController.deleteUserPosts)
-app.put('/userPost',userPostController.updateUserPosts)
+// app.get('/userPost',userPostController.getAllUserPosts)
+// app.post('/userPost',userPostController.addUserPost)
+// app.delete('/userPost',userPostController.deleteUserPosts)
+// app.put('/userPost',userPostController.updateUserPosts)
 //userPost--api
 
 
 //places--api
-app.get('/place',placesController.getAllPlaces)
-app.post('/place',placesController.addPlace)
-app.delete('/place/:placeId',placesController.deletePlace)
-app.put('/place',placesController.updatePlace)
-app.get("/getplacebyid/:placeid",placesController.getplaceByid)
+// app.get('/place',placesController.getAllPlaces)
+// app.post('/place',placesController.addPlace)
+// app.delete('/place/:placeId',placesController.deletePlace)
+// app.put('/place',placesController.updatePlace)
+// app.get("/getplacebyid/:placeid",placesController.getplaceByid)
 //places--api
 
 //common-places--api
@@ -125,6 +128,23 @@ app.delete("/status/:statusId",statusController.deleteStatus)
 app.put("/status",statusController.updatestatus)
 app.get("/status",statusController.getAllStatus)
 app.get("/getstatusbyid/:statusId",statusController.getstatusbyid)
+
+
+//imageuserpost--api
+app.use('/public', express.static('public'));
+app.use("/userpost",userPostController)
+app.use("/place",placesController)
+app.use((req, res, next) => {
+    // Error goes via `next()` method
+    setImmediate(() => {
+        next(new Error('Something went wrong'));
+    });
+});
+app.use(function (err, req, res, next) {
+    console.error(err.message);
+    if (!err.statusCode) err.statusCode = 500;
+    res.status(err.statusCode).send(err.message);
+});
 
 app.listen(9909,function(err){
     if(err){
