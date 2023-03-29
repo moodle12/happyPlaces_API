@@ -7,6 +7,9 @@ module.exports.login = function (req, res) {
     let email = req.body.email
     let password = req.body.password
 
+    var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var result = '';
+    for (var i = 16; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
     UserModel.findOne({
         $and: [
             { "email": email },
@@ -19,11 +22,21 @@ module.exports.login = function (req, res) {
                 msg: "Invalid Credentails",
                 data: req.body
             })
-        } else {
-            res.json({
-                status: 200,
-                msg: "Login done...",
-                data: data
+        }  else {
+            data.token=result
+            data.save(function(err,data2){
+                if(err)
+                {
+
+                }
+                else
+                {
+                    res.json({
+                        status: 200,
+                        msg: "Login done...",
+                        data: data
+                    })
+                }
             })
         }
     });
@@ -81,3 +94,6 @@ module.exports.getAllUsers = function (req, res) {
         }
     })
 }
+
+
+

@@ -12,7 +12,7 @@ const placeSchema = new mongoose.Schema({
         type:String
     },
     lat:{
-        type:String
+        type:String 
     },
     long:{
         type:String

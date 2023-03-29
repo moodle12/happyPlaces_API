@@ -31,6 +31,9 @@ const UserSchema = new mongoose.Schema({
     dob:{
         type:String
     },
+    token:{
+        type:String
+    },
     password:{
         type:String,
         required:true,

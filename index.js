@@ -9,12 +9,15 @@ const commonplacesController = require("./controller/commonvisitedController")
 const activityController = require("./controller/activityController")
 const postController = require("./controller/postController")
 const bookingController = require("./controller/bookingController")
+const tourController = require("./controller/toursController")
 const sessionController = require("./controller/sessionController")
 const statusController=require("./controller/statusController")
+const api = require('./controller/userProfileController')
 const mongoose = require("mongoose");
 const cors = require('cors');
 const app = express()
-const bodyParser =require("body-parser")
+const bodyParser =require("body-parser");
+const sendMail = require("./controller/userController");
 app.use(bodyParser.urlencoded({
     extended: false
 }));
@@ -48,6 +51,7 @@ app.put('/userType',userTypeController.updateUserTypes)
 app.get('/user',userController.getAllUser)
 app.post('/user',userController.addUser)
 app.post('/forgetPassword',userController.forgetPassword)
+// app.post('/sendmail',userController.sendM)
 app.put('/resetPassword',userController.resetPassword);
 app.delete('/user/:userId',userController.deleteUser)
 app.put('/user',userController.updateUser)
@@ -75,6 +79,16 @@ app.get("/activity",activityController.getAllActivity)
 app.get("/getactivitybyid/:activityId",activityController.getactivityByid)
 //Activity
 
+//tours
+app.post("/tour",tourController.addTours)
+app.delete("/tour/:tourId",tourController.deletetour)
+app.put("/tour",tourController.updatetour)
+app.get("/tour",tourController.getAlltours)
+app.get("/getthismonthtours", tourController.getThisMonthTours)
+app.get("/gettourbyid/:tourid",tourController.gettourbyid)
+app.get("/gettourbydate/:startDate/:endDate",tourController.getdatetours)
+app.get("/gettourbystatus/:statusid",tourController.gettourByStatus)
+//tours
 //customerFeedback--api
 app.get('/customerFeedback',customerFeedbackController.getAllCustomerFeedback)
 app.post('/customerFeedback',customerFeedbackController.addCustomerFeedback)
@@ -132,6 +146,8 @@ app.get("/getstatusbyid/:statusId",statusController.getstatusbyid)
 
 //imageuserpost--api
 app.use('/public', express.static('public'));
+app.use('/profile', express.static('profile'));
+app.use('/api', api)
 app.use("/userpost",userPostController)
 app.use("/place",placesController)
 app.use((req, res, next) => {

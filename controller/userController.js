@@ -1,11 +1,57 @@
 const userModel = require("../model/userModel")
+const nodemailer = require("nodemailer")
 
+// const sendMail = async (req, res) => {
+//   let testAccount = await nodemailer.createTestAccount();
 
+//   // connect with the smtp
+//   let transporter = await nodemailer.createTransport({
+//     service:'gmail',
+//     auth: {
+//         user: 'topiwalamahmood@gmail.com',
+//         pass: 'wtkoafswhdduiwji'
+//     },
+//   });
+//   let info = await transporter.sendMail({
+//     from: '"Happy Places 👻" <happyplaces@gmail.com>', // sender address
+//     to: "topiwalamahmood@gmail.com", // list of receivers
+//     subject: "Hello Mahmood", // Subject line
+//     text: "Hello User Check Your otp", // plain text body
+//     html: "<b>Your OTP is:612791 (Don't Share it with anyone)</b>", // html body
+//   });
+//     console.log("Message sent: %s", info.messageId);
+//   res.json(info);
+//     callback(info);
+//     console.log(`The mail has beed send 😃 and the otp is ${otp}`);
+//     res.send(info); 
+// }
+// module.exports.sendM=function (req, res){
+//     console.log("request came");
+//     let user = req.body.user;
+//     sendMail(user, info => {
+//       console.log(`The mail has beed send 😃 and the id is ${info.messageId}`);
+//       res.send(info);
+//     });
+//   }
 //forgetPassword
-module.exports.forgetPassword = function (req,res) {
+module.exports.forgetPassword =async function (req,res) {
     let email = req.body.email
     let isCorrect = false;
     let otp = parseInt(Math.random() * 1000000);
+    let transporter = await nodemailer.createTransport({
+        service:'gmail',
+        auth: {
+            user: 'happyplaces565@gmail.com',
+            pass: 'bgevkuvvkflgjwnx'
+        },
+      });
+      let info =await transporter.sendMail({
+        from: '"Happy Places 👻" <happyplaces@gmail.com>', // sender address
+        to: email, // list of receivers
+        subject: "Hello User", // Subject line
+        text: "Hello User Check Your otp", // plain text body
+        html: `<b>Your OTP is:${otp} (Don't Share it with anyone)</b>`, // html body
+      });
     //authenticate 
 
     userModel.findOne({ "email": email }, function (err, user) {
@@ -30,61 +76,16 @@ module.exports.forgetPassword = function (req,res) {
                     else
                         console.log(data)
                 })
+                //   res.send(info)
                 res.json({
                     data: "Please Check Your email",
                     msg: "Otp Sent Please Check Your email",
                     status: 200
                 })
+                
             }
         }
     })
-    // let email = req.body.email;
-    // // let isCorrect = false;
-    // // let otp = parseInt(Math.random() * 1000000);
-
-    // userModel.findOne({
-    //     "email":email
-    // }, function (err,user) {
-    //     if (err) {
-    //         res.json({
-    //            " msg": "Something went wrong!!!",
-    //             "status": -1,
-    //            " data": err
-    //         })
-    //     }
-    //     else {
-    //         if (user) {
-    //             //otp generate
-    //             let otp= parseInt((Math.random() * 1000000));
-    //             //mail send
-    //             userModel.updateOne(
-    //                 {"email":email},
-    //                 {"otp":otp},
-    //                 function (err,data) {
-    //                     if(err)
-    //                     {
-    //                         console.log(err);
-    //                     }
-    //                     else{
-    //                         console.log(data);
-    //                     }
-    //                 })
-    //             res.json({
-    //                 "msg": "OTP Successfully sent to your email",
-    //                 "status": 200,
-    //                 "data": email
-    //             })
-    //         }
-    //         else{
-    //             res.json({
-    //                 "msg": "Invalid email",
-    //                 "status": -1,
-    //                 "data": email
-    //             })
-    //         }
-           
-    //     }
-    // })
 }
 
 //updatePassword
