@@ -6,6 +6,7 @@ module.exports.addBooking = function(req,res){
     let place = req.body.place
     let act = req.body.act
     let user = req.body.user
+    let vendor = req.body.vendor
     let status = req.body.status
     let noOfPerson = req.body.noOfPerson
     let dateOfBooking = req.body.dateOfBooking
@@ -14,6 +15,7 @@ module.exports.addBooking = function(req,res){
         {
             // "bookingId":bookingId,
             "place":place,
+            "vendor":vendor,
             "act":act,
             "user":user,
             "status":status,
@@ -44,7 +46,7 @@ module.exports.addBooking = function(req,res){
 
 module.exports.getAllbooking = function (req,res)
 {
-    bookingModel.find().populate("place").populate("act").populate("user").populate("status").exec(function(err,succes){
+    bookingModel.find().populate("vendor").populate("place").populate("act").populate("user").populate("status").exec(function(err,succes){
         console.log(err);
         if(err)
         {
@@ -193,5 +195,31 @@ module.exports.getbookingByStatus = function(req,res){
             })
         }
     }).populate("place").populate("act").populate("user")
+
+}
+
+module.exports.getbookingbyvendor = function(req,res){
+    let vendorid = req.params.vendorid;
+    console.log(vendorid);
+    bookingModel.find({vendor:vendorid}).populate("place").populate("act").populate("vendor").populate("status").populate("user").exec(function(err,succes){
+        console.log(err);
+        if(err)
+        {
+            console.log(err);
+            res.json({
+                "msg":"SwR",
+                status:-1,
+                data:err
+            })
+        }
+        else
+        {
+            res.json({
+                "msg":"booking retrived",
+                status:200,
+                data:succes
+            })
+        }
+    })
 
 }

@@ -309,18 +309,23 @@ router.put("/",(req,res,next)=>{
 
 router.get("/getplacebyid/:placeid",(req,res,next)=>{
     let placeid = req.params.placeid;
-    placesModel.findOne({_id:placeid},function (err,data) {
-        if (err) {
+    placesModel.find({user:placeid}).populate("activity").populate("user").exec(function(err,succes){
+        console.log(err);
+        if(err)
+        {
+            console.log(err);
             res.json({
-                status: -1,
-                msg: "SME",
-                data: err
+                "msg":"SwR",
+                status:-1,
+                data:err
             })
-        } else {
+        }
+        else
+        {
             res.json({
-                status: 200,
-                msg: "place retrieved..",
-                data: data
+                "msg":"tours retrived",
+                status:200,
+                data:succes
             })
         }
     })

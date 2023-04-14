@@ -18,6 +18,10 @@ const bookingSchema = new mongoose.Schema(
             type:mongoose.Schema.Types.ObjectId,
              ref:"User"
         },
+        vendor:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Business"
+        },
         status:{
             type:mongoose.Schema.Types.ObjectId,
             ref:"Status"

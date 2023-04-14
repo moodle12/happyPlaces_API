@@ -16,7 +16,7 @@ const toursSchema = new mongoose.Schema(
         endDate:{
             type:Date
         },
-        status:{
+        status:{ 
             type:mongoose.Schema.Types.ObjectId,
             ref:"Status"
         },

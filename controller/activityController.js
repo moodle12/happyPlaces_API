@@ -4,10 +4,12 @@ module.exports.addActivity= function(req,res)
 {
     //  let actId = parseInt((Math.random()*10000))
     let actType = req.body.actType
+    let vendor = req.body.vendor
 
     let activity = new activitymodel(
         {
             //  "actId":actId,
+            "vendor":vendor,
             "actType":actType
         }
     )
@@ -35,7 +37,7 @@ module.exports.addActivity= function(req,res)
 
 module.exports.getAllActivity = function (req,res)
 {
-    activitymodel.find(function(err,succes){
+    activitymodel.find().populate("vendor").exec(function(err,succes){
         console.log(err);
         if(err)
         {
@@ -48,7 +50,7 @@ module.exports.getAllActivity = function (req,res)
         else
         {
             res.json({
-                "msg":"activites retrived",
+                "msg":"actvty retrived",
                 status:200,
                 data:succes
             })
@@ -121,6 +123,30 @@ module.exports.getactivityByid = function(req,res){
                 status: 200,
                 msg: "Activity retrieved..",
                 data: data
+            })
+        }
+    })
+
+}
+module.exports.getactivitybyvendor = function(req,res){
+    let vendorid = req.params.vendorid;
+    activitymodel.find({vendor:vendorid}).populate("vendor").exec(function(err,succes){
+        console.log(err);
+        if(err)
+        {
+            console.log(err);
+            res.json({
+                "msg":"SwR",
+                status:-1,
+                data:err
+            })
+        }
+        else
+        {
+            res.json({
+                "msg":"activity retrived",
+                status:200,
+                data:succes
             })
         }
     })

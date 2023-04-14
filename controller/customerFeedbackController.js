@@ -107,3 +107,29 @@ module.exports.updateCustomerFeedback = function(req,res){
     })
 
 }//updateCustomerFeedback
+
+module.exports.getfeedbackbyvendor = function(req,res){
+    let vendorid = req.params.vendorid;
+    console.log(vendorid);
+    customerFeedbackModel.find({business:vendorid}).populate("business").populate("user").exec(function(err,succes){
+        console.log(err);
+        if(err)
+        {
+            console.log(err);
+            res.json({
+                "msg":"SwR",
+                status:-1,
+                data:err
+            })
+        }
+        else
+        {
+            res.json({
+                "msg":"tours retrived",
+                status:200,
+                data:succes
+            })
+        }
+    })
+
+}

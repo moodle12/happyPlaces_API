@@ -71,12 +71,14 @@ app.get("/booking",bookingController.getAllbooking)
 app.get("/getthismonthbooking", bookingController.getThisMonthBookings)
 app.get("/getbookingbyid/:bookingid",bookingController.getbookingByid)
 app.get("/getbookingbystatus/:statusid",bookingController.getbookingByStatus)
+app.get("/getbookingbyvendor/:vendorid",bookingController.getbookingbyvendor)
 // table 4 Activity
 app.post("/activity",activityController.addActivity)
 app.delete("/activity/:activityId",activityController.deleteActivity)
 app.put("/activity",activityController.updateActivity)
 app.get("/activity",activityController.getAllActivity)
 app.get("/getactivitybyid/:activityId",activityController.getactivityByid)
+app.get("/getactivitybyvendor/:vendorid",activityController.getactivitybyvendor)
 //Activity
 
 //tours
@@ -88,12 +90,13 @@ app.get("/getthismonthtours", tourController.getThisMonthTours)
 app.get("/gettourbyid/:tourid",tourController.gettourbyid)
 app.get("/gettourbydate/:startDate/:endDate",tourController.getdatetours)
 app.get("/gettourbystatus/:statusid",tourController.gettourByStatus)
-//tours
+app.get("/gettourbyvendor/:vendorid",tourController.gettourbyvendor)
 //customerFeedback--api
 app.get('/customerFeedback',customerFeedbackController.getAllCustomerFeedback)
 app.post('/customerFeedback',customerFeedbackController.addCustomerFeedback)
 app.delete('/customerFeedback',customerFeedbackController.deleteCustomerFeedback)
 app.put('/customerFeedback',customerFeedbackController.updateCustomerFeedback)
+app.get("/getfeedbackbyvendor/:vendorid",customerFeedbackController.getfeedbackbyvendor)
 //customerFeedback--api
 
 
@@ -153,7 +156,7 @@ app.use("/place",placesController)
 app.use((req, res, next) => {
     // Error goes via `next()` method
     setImmediate(() => {
-        next(new Error('Something went wrong'));
+        next(new Error('Something went wrong-- url not found'));
     });
 });
 app.use(function (err, req, res, next) {

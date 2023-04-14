@@ -115,12 +115,13 @@ module.exports.getdatetours = function (req,res)
     // console.log(y);
     let startDate=req.params.startDate
     let endDate=req.params.endDate
+    console.log("=============");
     console.log(startDate);
     console.log(endDate);
     toursModel.find({
             startDate:{
                  $gte:startDate,
-                 $lt: endDate
+                 $lte: endDate
             }
              }).populate("place").populate("act").populate("vendor").populate("status").exec(function(err,succes){
         console.log(err);
@@ -239,5 +240,30 @@ module.exports.gettourByStatus = function(req,res){
             })
         }
     }).populate("place").populate("act").populate("business")
+
+}
+module.exports.gettourbyvendor = function(req,res){
+    let vendorid = req.params.vendorid;
+    console.log(vendorid);
+    toursModel.find({vendor:vendorid}).populate("place").populate("act").populate("vendor").populate("status").exec(function(err,succes){
+        console.log(err);
+        if(err)
+        {
+            console.log(err);
+            res.json({
+                "msg":"SwR",
+                status:-1,
+                data:err
+            })
+        }
+        else
+        {
+            res.json({
+                "msg":"tours retrived",
+                status:200,
+                data:succes
+            })
+        }
+    })
 
 }

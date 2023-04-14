@@ -5,6 +5,10 @@ const activitySchema = new mongoose.Schema(
         //      type:Number
         //     //  required:true
         //  },
+        vendor:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Business"
+        },
         actType :{
             type:String
         }
