@@ -12,6 +12,7 @@ const bookingController = require("./controller/bookingController")
 const tourController = require("./controller/toursController")
 const sessionController = require("./controller/sessionController")
 const statusController=require("./controller/statusController")
+const customerBookingController=require("./controller/customerBookingController")
 const api = require('./controller/userProfileController')
 const mongoose = require("mongoose");
 const cors = require('cors');
@@ -25,8 +26,8 @@ app.use(cors())
 app.use(express.json())  //body
 app.use(express.urlencoded({extended:true})) //body -- extended true because of plus or any other symbol
 app.use(bodyParser.json());
-
-mongoose.connect("mongodb://localhost:27017/happyPlaces",function (err) {
+//mongodb://localhost:27017/happyPlaces
+mongoose.connect("mongodb+srv://topiwalamahmood:root@cluster0.ctso0mc.mongodb.net/HappyPlaces",function (err) {
 
     if (err) {
         console.log("OH NO!! Something went wrong!");
@@ -80,6 +81,15 @@ app.get("/activity",activityController.getAllActivity)
 app.get("/getactivitybyid/:activityId",activityController.getactivityByid)
 app.get("/getactivitybyvendor/:vendorid",activityController.getactivitybyvendor)
 //Activity
+
+//customerbooking
+app.post("/customerbooking",customerBookingController.addcustomerBooking)
+app.delete("/customerbooking/:bookingId",customerBookingController.deletecustomerbooking)
+app.put("/customerbooking",customerBookingController.updatecustomerbooking)
+app.get("/customerbooking",customerBookingController.getAllbooking)
+app.get("/getthismonthcustomerbooking", customerBookingController.getThisMonthcustomerBookings)
+app.get("/getcustomerbookingbyid/:bookingid",customerBookingController.getcustomerbookingByid)
+
 
 //tours
 app.post("/tour",tourController.addTours)

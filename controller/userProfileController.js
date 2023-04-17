@@ -58,24 +58,24 @@ router.get("/", (req, res, next) => {
         });
     });
 });
-// router.get("/:userid",(req,res)=>{
-//     let userid = req.params.userid;
-//     User.findOne({user:userid},function (err,data) {
-//         if (err) {
-//             res.json({
-//                 status: -1,
-//                 msg: "SME",
-//                 data: err
-//             })
-//         } else {
-//             res.json({
-//                 status: 200,
-//                 msg: "user reterieved..",
-//                 data: data
-//             })
-//         }
-//     }).populate("user")
-// })
+router.get("/:userid",(req,res)=>{
+    let userid = req.params.userid;
+    User.findOne({user:userid},function (err,data) {
+        if (err) {
+            res.json({
+                status: -1,
+                msg: "SME",
+                data: err
+            })
+        } else {
+            res.json({
+                status: 200,
+                msg: "user reterieved..",
+                data: data
+            })
+        }
+    }).populate("user")
+})
 router.put("/:userid",upload.single('profileImg'),(req,res,next)=>{
     let url = req.protocol + '://' + req.get('host')
     let userid = req.params.userid

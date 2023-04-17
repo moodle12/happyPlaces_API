@@ -206,18 +206,23 @@ module.exports.deletetour = function (req,res)
 }//delete booking 
 module.exports.gettourbyid = function(req,res){
     let tourid = req.params.tourid;
-    toursModel.findOne({_id:tourid},function (err,data) {
-        if (err) {
+    toursModel.find({_id:tourid}).populate("place").populate("act").populate("vendor").populate("status").exec(function(err,succes){
+        console.log(err);
+        if(err)
+        {
+            console.log(err);
             res.json({
-                status: -1,
-                msg: "SME",
-                data: err
+                "msg":"SwR",
+                status:-1,
+                data:err
             })
-        } else {
+        }
+        else
+        {
             res.json({
-                status: 200,
-                msg: "tour retrieved..",
-                data: data
+                "msg":"tours retrived",
+                status:200,
+                data:succes
             })
         }
     })
